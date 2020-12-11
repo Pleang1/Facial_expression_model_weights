@@ -10,8 +10,8 @@ num_classes = 5
 img_rows,img_cols = 48,48
 batch_size = 32
 
-train_data_dir = '/Users/durgeshthakur/Deep Learning Stuff/Emotion Classification/fer2013/train'
-validation_data_dir = '/Users/durgeshthakur/Deep Learning Stuff/Emotion Classification/fer2013/validation'
+train_data_dir = 'E:/Project/New folder/face-expression-recognition-dataset/images/train'
+validation_data_dir = 'E:/Project/New folder/face-expression-recognition-dataset/images/validation'
 
 train_datagen = ImageDataGenerator(
 					rescale=1./255,

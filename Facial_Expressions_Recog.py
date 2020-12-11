@@ -1,18 +1,20 @@
 from keras.models import load_model
 from time import sleep
+import tensorflow
+from tensorflow import keras
+from tensorflow.keras import models
 from keras.preprocessing.image import img_to_array
 from keras.preprocessing import image
 import cv2
 import numpy as np
 
-face_classifier = cv2.CascadeClassifier(r'C:\Python37\Projects\Live Project\haarcascade_frontalface_default.xml')
-classifier =load_model(r'C:\Python37\Projects\Live Project\Emotion_little_vgg.h5')
+face_classifier = cv2.CascadeClassifier(r'E:\Project\New folder\Facial-Expressions-Recognition\haarcascade_frontalface_default.xml')
+model =load_model(r'E:\Project\New folder\Facial-Expressions-Recognition\model_weights.hdf5')
 
-class_labels = ['Angry','Happy','Neutral','Sad','Surprise']
+#class_labels = ['Angry','Happy','Neutral','Sad','Surprise']
+class_labels = ["Angry","Disgust","Fear","Happy","Neutral", "Sad","Surprise"]
 
 cap = cv2.VideoCapture(0)
-
-
 
 while True:
     # Grab a single frame of video
@@ -32,12 +34,11 @@ while True:
             roi = roi_gray.astype('float')/255.0
             roi = img_to_array(roi)
             roi = np.expand_dims(roi,axis=0)
-
-        # make a prediction on the ROI, then lookup the class
-
-            preds = classifier.predict(roi)[0]
-            label=class_labels[preds.argmax()]
+            roi = cv2.resize(roi_gray, (48, 48))
+            pred = model.predict(roi[np.newaxis, :, :, np.newaxis])
+            label=class_labels[pred.argmax()]
             label_position = (x,y)
+            #pred = model.predict(roi[np.newaxis, :, :, np.newaxis])
             cv2.putText(frame,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,0),3)
         else:
             cv2.putText(frame,'No Face Found',(20,60),cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,0),3)
